@@ -1,0 +1,290 @@
+stage,prompt,reply
+1,"
+    Your task is to aid a team of system dynamics modellers by a generating Causal Loop Diagrams  Specification (CLDS), which consists of a Node List and an Edge List, from a textual description of a system. The textual description is called the Dynamic Hypotheses Input (DHI).  The task of generating a CLDS from a DHI has two parts: 
+    (i)	generation of system variables, specified as a Node List, from the DHI. 
+    Note that the variables are generally nouns, with a sense of direction. A sense of direction means that, for example, “Morale” is better than “Mental Attitude”, because with morale we know that higher generally is better.
+    (ii)	generation of a directed graph (which completes the CLDS), specified by the Node List and an Edge List, from the DHI. 
+    Note that the Edge List shows relationships between the variables in the Node List. Only two types of relationships exist: positive (shown by 1) and negative links (shown by -1). 
+    
+    A positive link from variable X to variable Y means that other things being constant, increasing X would change Y to a level above what it would otherwise have been and decreasing X would change Y to a level below what it would otherwise have been. 
+    
+    A negative link from variable X to variable Y means that other things being constant, increasing X would change Y to a level below what it would otherwise have been and decreasing X would change Y to a level above what it would otherwise have been. 
+
+    The steps to follow are the following:
+    
+    For Case 1 and Case 2,
+        1.	The modelling team will give you the DHI and ask you to confirm that you have understood it.
+        2.	Then the modelling team will give you the Node List. 
+        3.	Finally, the modelling team will provide you with the Edge List.
+    
+    Use Cases 1 and 2 to internalize the generation of the CLDS from the DHI.
+
+    For Case 3 and other cases in the future:
+        1.	The modelling team will give you the DHI.
+        2.	You are to generate a proposed Node List. 
+        3.	The modelling team will review this list and provide you a corrected Node List. 
+        4.	You are to generate the Edge List.
+        5.	The modelling team will provide you with the corrected Edge List.
+
+    Case 1, Case 2, and Case 3 have increasing complexity. 
+    
+    Is this overall flow clear? 
+    ","Yes, the overall flow is clear. It involves understanding and processing the Dynamic Hypotheses Input (DHI) to generate a Causal Loop Diagrams Specification (CLDS) composed of a Node List and an Edge List. For Cases 1 and 2, I will confirm my understanding of the DHI, then receive the Node List and Edge List from the team. For Case 3 and beyond, I will generate a proposed Node List from the DHI, receive feedback to correct the Node List, and then generate and receive feedback on the Edge List. This process will build from simple to more complex examples to help internalize the task."
+2,"
+    Prompt 2 establishes the basic mechanism of CLDS construction with a simple use case. By completing Case 1, the LLM should gain some familiarity with the syntax and logic of causal diagrams. Prompt 2 is as follows:
+    
+    Let’s follow the flow and start with Case 1. 
+    
+    Case 1 DHI: Births and deaths
+
+    An increase in fertility (births per population) means the birth rate (in people per year) will increase above what it would otherwise have been, and a decrease in fertility means the birth rate will fall below what it would otherwise have been. In short: fertility is positively linked to birth rate. 
+
+    Average lifetime (years lived per person) is negatively linked to death rate (people per year). Birth rate to population is a positive link; Population to birth rate is a positive link. Population to death rate is a direct relationship; Death rate to population is an inverse relationship.
+    ","Got it. Let's break down the Case 1 DHI and confirm my understanding of it:
+
+1. **Fertility** is positively linked to the **Birth Rate**. This means that an increase in fertility will result in an increase in the birth rate (people per year), and a decrease in fertility will result in a decrease in the birth rate.
+
+2. **Average Lifetime** is negatively linked to the **Death Rate**. This implies that an increase in average lifetime will lead to a decrease in the death rate (people per year), and a decrease in average lifetime will lead to an increase in the death rate.
+
+3. **Birth Rate** is positively linked to **Population**. An increase in birth rate will increase the population, and a decrease in birth rate will decrease the population.
+
+4. **Population** is positively linked to **Birth Rate**. As the population increases, the birth rate will increase, and as the population decreases, the birth rate will decrease.
+
+5. **Population** has a direct relationship with **Death Rate**. This suggests that changes in population directly affect the death rate.
+
+6. **Death Rate** has an inverse relationship with **Population**. Thus, as the death rate increases, the population decreases, and as the death rate decreases, the population increases.
+
+This explanation matches the relationships described in the DHI. Next, I would receive the Node List from the modelling team to confirm this understanding."
+3,"
+    Prompt 3 provides the LLM with the Node and Edge Lists for Case 1 as follows:
+
+    Case 1 Node List
+    Node.ID,	Node.Description
+    01,	Fertility
+    02,	Birth rate
+    03,	Population
+    04,	Death rate
+    05,	Average lifetime
+
+    Case 1 Edges List
+    Source.Node.ID,	Sink.Node.ID,	Value
+    01,	02,	1
+    02,	03,	1
+    03,	02,	1
+    03,	04,	1
+    04,	03,	-1
+    05,	04,	-1
+
+    Is Case 1 clear? 
+
+    ","Yes, Case 1 is clear. The provided Node List and Edge List align with the DHI:
+
+- **Node List:**
+  - **01**: Fertility
+  - **02**: Birth rate
+  - **03**: Population
+  - **04**: Death rate
+  - **05**: Average lifetime
+
+- **Edge List:**
+  - Fertility (01) positively influences Birth rate (02).
+  - Birth rate (02) positively influences Population (03).
+  - Population (03) positively influences Birth rate (02).
+  - Population (03) positively influences Death rate (04).
+  - Death rate (04) negatively influences Population (03).
+  - Average lifetime (05) negatively influences Death rate (04).
+
+These relationships reflect the dynamic linkages described in the DHI, with appropriate positive and negative links corresponding to each relationship."
+4,"
+    Now let’s move to Case 2. Case 2 DHI: Susceptible Infectious Recovered (SIR) Model:
+
+    The total population of an island determines the initial “susceptible population” (i.e., those can be infected). Those contracting the infection become infectious (join “infectious population”) for a period of time, but then recover (join “recovered population”) and develop permanent immunity. Contact rate is the rate of interaction in the community, or people contacted per person per time. Infectivity is the probability that the disease is transmitted when a susceptible person contacts an infection person. The infection rate, i.e., people infected per day, is directly proportional to susceptible population, (infectious population/total population), infectivity, and contact rate. The infectious population increases as the infection rate increases; the susceptible population decreases as infection rate increases. Recovery rate (that is, people recovering per unit time), increases with infectious population, but decreases with average duration of infectivity. Recovery rate reduces the infectious population, and increases the recovered population.
+    ","Understood. Let's break down the Case 2 DHI to identify the relationships:
+
+1. **Total Population** affects the **Susceptible Population**. The more significant the total population, the larger the initial susceptible population.
+
+2. People contracting the infection move from the **Susceptible Population** to the **Infectious Population**.
+
+3. Individuals in the **Infectious Population** eventually move to the **Recovered Population** and develop permanent immunity.
+
+4. **Contact Rate** is the rate of interaction, impacting how quickly the infection can spread.
+
+5. **Infectivity** determines the likelihood of transmission when a susceptible person contacts an infectious person.
+
+6. **Infection Rate** (people infected per day) is directly proportional to:
+   - Susceptible Population
+   - (Infectious Population / Total Population)
+   - Infectivity
+   - Contact Rate
+
+7. The **Infectious Population** increases with an increase in the **Infection Rate**, while the **Susceptible Population** decreases.
+
+8. **Recovery Rate** (people recovering per unit time) is related to:
+   - An increase in Infectious Population increases Recovery Rate.
+   - A decrease in Average Duration of Infectivity increases Recovery Rate.
+
+9. **Recovery Rate** decreases the Infectious Population and increases the Recovered Population.
+
+These are the key relationships outlined in the DHI for the SIR model. Once I receive the Node List from the team, the appropriate nodes can be identified to match this understanding."
+5,"
+    Case 2 Node List
+    
+    Node.ID,	Node.Description
+    01,	Susceptible population
+    02,	Infectious population
+    03,	Recovered population
+    04,	Total population
+    05,	Infectivity
+    06,	Contact rate
+    07,	Infection rate
+    08,	Avg duration of infectivity
+    09,	Recovery rate
+
+    Case 2 Edges List
+
+    Source.Node.ID,	Sink.Node.ID,	Value
+    01,	07,	1
+    02,	07,	1
+    02,	09,	1
+    04,	01,	1
+    04,	07,	-1
+    05,	07,	1
+    06,	07,	1
+    07,	01,	-1
+    07,	02,	1
+    08,	09,	-1
+    09,	02,	-1
+    09,	03,	1
+    ","The provided Node List and Edge List for Case 2 align with the DHI of the SIR Model. Let's review them:
+
+- **Node List:**
+  - **01**: Susceptible population
+  - **02**: Infectious population
+  - **03**: Recovered population
+  - **04**: Total population
+  - **05**: Infectivity
+  - **06**: Contact rate
+  - **07**: Infection rate
+  - **08**: Avg duration of infectivity
+  - **09**: Recovery rate
+
+- **Edge List:**
+  - Susceptible population (01) positively influences Infection rate (07).
+  - Infectious population (02) positively influences both Infection rate (07) and Recovery rate (09).
+  - Total population (04) positively influences Susceptible population (01) and negatively influences Infection rate (07).
+  - Infectivity (05) positively influences Infection rate (07).
+  - Contact rate (06) positively influences Infection rate (07).
+  - Infection rate (07) negatively influences Susceptible population (01) and positively influences Infectious population (02).
+  - Average duration of infectivity (08) negatively influences Recovery rate (09).
+  - Recovery rate (09) negatively influences Infectious population (02) and positively influences Recovered population (03).
+
+These relationships correctly capture the dynamics described in the DHI of the SIR model, with positive and negative links representing the direct and inverse relationships among the system variables."
+6,"
+    Now you need to work on Case 3.
+    
+    Case 3 DHI: Acute Hospital Use
+    Rising population level, together with population ageing, cause an increase in the chronic disease burden as well as the burden of frailty in Singapore. These two burdens both translate into three types of needs: (i) acute care needs (ii) sub-acute care needs (iii) rehab needs. Acute care needs drive unavoidable Length of Stay (LOS) in Acute Hospitals (AHs), while sub-acute needs drive Avoidable LOS. (Note: LOS is considered avoidable when the stay could have been “decanted” to a site other than an AH). Rehab needs drive both unavoidable and avoidable LOS. Avoidable LOS drives avoidable AH inpatient-days, and unavoidable LOS drives unavoidable AH inpatient-days. Avoidable and unavoidable inpatient-days together affect AH beds required. 
+    AH capacity gap is directly driven by AH beds required; on the other hand AH beds required is positively linked to AH capacity increases, which is negatively linked to AH capacity gap. AH capacity gap drives waiting time for AH beds, which drives unmet needs, which increases chronic disease burden and the burden of frailty. 
+    Burden of frailty and chronic disease burden drive AH inpatient admissions, which is positively linked to both Avoidable and unavoidable AH inpatient-days.
+    
+    Provide me your Node List
+    ","Based on the Case 3 DHI for Acute Hospital Use, here is a proposed Node List capturing the key variables described in the scenario:
+
+1. **Population Level**: Represents the overall population size.
+2. **Population Ageing**: Represents the ageing demographic factor.
+3. **Chronic Disease Burden**: Represents the prevalence and impact of chronic diseases.
+4. **Burden of Frailty**: Represents the degree of frailty within the population.
+5. **Acute Care Needs**: Represents the demand for acute care services.
+6. **Sub-Acute Care Needs**: Represents the demand for sub-acute care services.
+7. **Rehab Needs**: Represents the demand for rehabilitation services.
+8. **Unavoidable Length of Stay (LOS)**: Refers to the necessary duration of stay in acute hospitals.
+9. **Avoidable Length of Stay (LOS)**: Refers to the duration of stay that could be managed elsewhere.
+10. **Avoidable AH Inpatient-Days**: Represents the inpatient days due to avoidable LOS.
+11. **Unavoidable AH Inpatient-Days**: Represents the inpatient days due to unavoidable LOS.
+12. **AH Beds Required**: Represents the demand for hospital beds.
+13. **AH Capacity Gap**: Difference between required and available hospital capacity.
+14. **AH Capacity Increases**: Represents the expansion of hospital capacity.
+15. **Waiting Time for AH Beds**: Time patients wait for hospital bed availability.
+16. **Unmet Needs**: Represents healthcare needs not being met.
+17. **AH Inpatient Admissions**: Represents admissions due to frailty and chronic disease burdens.
+
+This list attempts to capture the key concepts and relationships from the Dynamic Hypotheses Input. Please review and provide any corrections or additional nodes to further align with the intended scenario."
+7,"
+    This is the corrected Case 3 Node List.
+
+    Node.ID,	Node.Description
+    A01,	Population
+    A02,	Population ageing
+    A03,	Chronic Disease Burden
+    A04,	Burden of frailty
+    A05a,	Acute care needs
+    A05b,	Rehab care needs
+    A05c,	Sub-acute care needs
+    A06a,	Unavoidable AH LOS
+    A06b,	Avoidable AH LOS
+    A07a,	Unavoidable AH inpatient-days
+    A07b,	Avoidable AH inpatient-days
+    A08,	AH beds required
+    A09,	AH capacity increases
+    A10,	AH capacity gap
+    A11,	Waiting time for AH beds
+    A12,	Unmet needs
+    A13,	AH inpatient admissions
+    ","Thank you for providing the corrected Node List for Case 3. Here it is for reference:
+
+- **A01**: Population
+- **A02**: Population ageing
+- **A03**: Chronic Disease Burden
+- **A04**: Burden of frailty
+- **A05a**: Acute care needs
+- **A05b**: Rehab care needs
+- **A05c**: Sub-acute care needs
+- **A06a**: Unavoidable AH LOS
+- **A06b**: Avoidable AH LOS
+- **A07a**: Unavoidable AH inpatient-days
+- **A07b**: Avoidable AH inpatient-days
+- **A08**: AH beds required
+- **A09**: AH capacity increases
+- **A10**: AH capacity gap
+- **A11**: Waiting time for AH beds
+- **A12**: Unmet needs
+- **A13**: AH inpatient admissions
+
+Using this Node List, I will now generate the proposed Edge List based on the relationships described in the DHI. Please allow me a moment to do this."
+8,"
+    Using the corrected Node List, provide me the Edges List, formatted so that it is easy to copy into a spreadsheet.
+    ","Based on the Case 3 DHI and the corrected Node List, here is the proposed Edge List, formatted for spreadsheet use:
+
+```
+Source.Node.ID,	Sink.Node.ID,	Value
+A01,	A03,	1
+A01,	A04,	1
+A02,	A03,	1
+A02,	A04,	1
+A03,	A05a,	1
+A03,	A05b,	1
+A03,	A05c,	1
+A04,	A05a,	1
+A04,	A05b,	1
+A04,	A05c,	1
+A05a,	A06a,	1
+A05b,	A06a,	1
+A05b,	A06b,	1
+A05c,	A06b,	1
+A06a,	A07a,	1
+A06b,	A07b,	1
+A07a,	A08,	1
+A07b,	A08,	1
+A08,	A09,	1
+A09,	A10,	-1
+A10,	A11,	1
+A11,	A12,	1
+A12,	A03,	1
+A12,	A04,	1
+A03,	A13,	1
+A04,	A13,	1
+A13,	A07a,	1
+A13,	A07b,	1
+```
+
+This Edge List captures the direct and inverse relationships described in the DHI. Please review this list and let me know if there are any adjustments needed."
